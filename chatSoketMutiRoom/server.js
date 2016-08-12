@@ -31,29 +31,37 @@ var rooms = ['room1','room2','room3'];
 
 io.sockets.on('connection', function (socket) {
 	
+	Adduser(socket);
+	SendChat(socket);
+	SwitchRoom(socket);
+	Disconnect(socket);
+	
+});
+
+function Adduser(socket){
 	// when the client emits 'adduser', this listens and executes
 	socket.on('adduser', function(username){
 		// store the username in the socket session for this client
-		socket.username = username;
+	socket.username = username;
 		// store the room name in the socket session for this client
-		socket.room = 'room1';
+	socket.room = 'room1';
 		// add the client's username to the global list
-		usernames[username] = username;
+	usernames[username] = username;
 
-		var mypost = new post();
-		mypost.name = username;
-		mypost.save();
+	var mypost = new post();
+	mypost.name = username;
+	mypost.save();
 
-		// send client to room 1
-		socket.join('room1');
+	// send client to room 1
+	socket.join('room1');
 		// echo to client they've connected
-		socket.emit('updatechat', 'SERVER', 'you have connected to room1');
+	socket.emit('updatechat', 'SERVER', 'you have connected to room1');
 		// echo to room 1 that a person has connected to their room
-		socket.broadcast.to('room1').emit('updatechat', 'SERVER', username + ' has connected to this room');
-		socket.emit('updaterooms', rooms, 'room1');
+	socket.broadcast.to('room1').emit('updatechat', 'SERVER', username + ' has connected to this room');
+	socket.emit('updaterooms', rooms, 'room1');
 	});
-	
-	// when the client emits 'sendchat', this listens and executes
+}
+function SendChat(socket){
 	socket.on('sendchat', function (data) {
 		
 		// we tell the client to execute 'updatechat' with 2 parameters
@@ -62,7 +70,8 @@ io.sockets.on('connection', function (socket) {
 		mypost.save();
 
 	});
-	
+}
+function SwitchRoom(socket){
 	socket.on('switchRoom', function(newroom){
 		socket.leave(socket.room);
 		socket.join(newroom);
@@ -74,9 +83,9 @@ io.sockets.on('connection', function (socket) {
 		socket.broadcast.to(newroom).emit('updatechat', 'SERVER', socket.username+' has joined this room');
 		socket.emit('updaterooms', rooms, newroom);
 	});
-	
 
-	// when the user disconnects.. perform this
+}
+function Disconnect(socket){
 	socket.on('disconnect', function(){
 		// remove the username from global usernames list
 		delete usernames[socket.username];
@@ -86,4 +95,4 @@ io.sockets.on('connection', function (socket) {
 		socket.broadcast.emit('updatechat', 'SERVER', socket.username + ' has disconnected');
 		socket.leave(socket.room);
 	});
-});
+}
