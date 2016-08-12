@@ -2,17 +2,32 @@ var express = require('express');
 var app = express();  
 var server = require('http').createServer(app);  
 var io = require('socket.io')(server);
-server.listen(3000); 
+var CONFIG = require('./ConfigServer/config.js');
+
+server.listen(CONFIG.PORT); 
  
 app.get('/', function(req, res,next) {  
+
     res.sendFile(__dirname + '/index.html');
 });
 
-io.on('connection', function(socket) {  
-    console.log('Client connected...');
+app.get('/Client/config.js', function(req, res,next) {  
 
-    socket.emit('news', { hello: 'world' });
-  	socket.on('my_other_event', function (data) {
+    res.sendFile(__dirname + '/Client/config.js');
+});
+
+app.get('/Client/functions.js', function(req, res,next) {  
+
+    res.sendFile(__dirname + '/Client/functions.js');
+});
+
+
+io.on(CONFIG.KEY_CONNECTON, function(socket) { 
+
+    console.log(__dirname + 'Client connected...');
+
+    socket.emit(CONFIG.KEY_EVENT_NEW, { hello: 'world' });
+  	socket.on(CONFIG.KEY_EVENT_MY_OTHER, function (data) {
     console.log(data);
  });
 });

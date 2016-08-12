@@ -1,13 +1,23 @@
 
-<script src="/socket.io/socket.io.js"></script>  
+<!DOCTYPE html>
+<html>
+<head>
 
-<script>  
+	<title>TEST SOCKET IO</title>
 
-    var socket = io.connect('http://localhost:3000');
-    socket.on('news', function (data) {
-        console.log(data);
-            socket.emit('my_other_event', { my: 'data' });
-        });
+	<script src="socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="/Client/config.js"></script>
+	<script type="text/javascript" src="/Client/functions.js"></script>
 
+</head>
+
+<body>
+	<script>  
+
+	    var socket = io.connect(ADDRESS + PORT);
+
+	    listen_event(socket);
     </script>
 </script>
+</body>
+</html>
