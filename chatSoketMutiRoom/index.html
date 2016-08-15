@@ -1,35 +1,16 @@
 <script src="/socket.io/socket.io.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+<script type="text/javascript" src="http://localhost:8000/ClientChat/config.js"></script>
+<script type="text/javascript" src="http://localhost:8000/ClientChat/functions.js"></script>
 <script>
 	var socket = io.connect('http://localhost:8080');
-
-	socket.on('connect', function() {
-
-		socket.emit('adduser', prompt("What's your name?"));
-	});
-
-	socket.on('updatechat', function (username, data) {
-
-		$('#conversation').append('<b>'+username + ':</b> ' + data + '<br>');
-	});
-
-	socket.on('updaterooms', function(rooms, current_room) {
-
-		$('#rooms').empty();
-		$.each(rooms, function(key, value) {
-			if(value == current_room){
-
-				$('#rooms').append('<div>' + value + '</div>');
-			}else {
-
-				$('#rooms').append('<div><a href="#" onclick="switchRoom(\''+value+'\')">' + value + '</a></div>');
-			}
-		});
-	});
-
+	socketOnConnect(socket);
+	socketOnUpDateChat(socket);
+	socketOnUpDateRooms(socket);
+	
 	function switchRoom(room){
 
-		socket.emit('switchRoom', room);
+		socket.emit(SWITCHROOM, room);
 	}
 	
 	$(function(){

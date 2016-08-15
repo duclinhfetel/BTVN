@@ -11,16 +11,6 @@ app.get('/', function(req, res, next) {
     res.sendFile(__dirname + '/index.html');
 });
 
-app.get('/Client/config.js', function(req, res, next) {  
-
-    res.sendFile(__dirname + '/Client/config.js');
-});
-
-app.get('/Client/functions.js', function(req, res, next) {  
-
-    res.sendFile(__dirname + '/Client/functions.js');
-});
-
 io.on(CONFIG.KEY_CONNECTON, function(socket) { 
 
     console.log(__dirname + 'Client connected...');
