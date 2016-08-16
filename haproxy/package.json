@@ -1,0 +1,7 @@
+{
+  "name": "haproxy",
+  "version": "0.0.1",
+  "dependencies": {
+    "morgan": "^1.7.0"
+  }
+}
