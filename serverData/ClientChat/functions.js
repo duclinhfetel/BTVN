@@ -1,7 +1,7 @@
 function socketOnConnect(socket) {
-	socket.on('connect', function() {
+	socket.on(VEVENT_CONNECT, function() {
 
-		socket.emit( VEVENT_CONNECT, prompt("What's your name?"));
+		socket.emit( ADDUSER, prompt("What's your name?"));
 	});
 }
 function socketOnUpDateChat(socket){
@@ -23,6 +23,23 @@ function socketOnUpDateRooms(socket){
 			}else {
 
 				$('#rooms').append('<div><a href="#" onclick="switchRoom(\''+value+'\')">' + value + '</a></div>');
+			}
+		});
+	});
+}
+function enventOnclick(){
+	$(function(){
+
+		$('#datasend').click( function() {
+			var message = $('#data').val();
+			$('#data').val('');
+			socket.emit('sendchat', message);
+		});
+
+		$('#data').keypress(function(e) {
+			if(e.which == 13) {
+				$(this).blur();
+				$('#datasend').focus().click();
 			}
 		});
 	});

@@ -4,18 +4,18 @@ var http = require('http');
 var server = http.createServer(app);
 var io = require('socket.io').listen(server);
 
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-	mongoose.connect('mongodb://localhost/test');
+// var mongoose = require('mongoose');
+// var Schema = mongoose.Schema;
+// 	mongoose.connect('mongodb://localhost/test');
 
-var userSchema = new Schema ({
-	room: String,
-	name : String,
-	meg : String
-});
+// var userSchema = new Schema ({
+// 	room: String,
+// 	name : String,
+// 	meg : String
+// });
 
-var post = mongoose.model('Post',userSchema);
-var mypost = new post();
+// var post = mongoose.model('Post',userSchema);
+// var mypost = new post();
 
 server.listen(8080);
 
@@ -45,9 +45,9 @@ function Adduser(socket) {
 		socket.room = 'room1';
 		usernames[username] = username;
 
-		var mypost = new post();
-		mypost.name = username;
-		mypost.save();
+		// var mypost = new post();
+		// mypost.name = username;
+		// mypost.save();
 
 		socket.join('room1');
 		socket.emit('updatechat', 'SERVER', 'you have connected to room1');
@@ -60,8 +60,8 @@ function SendChat(socket) {
 
 	socket.on('sendchat', function (data) {
 		io.sockets.in(socket.room).emit('updatechat', socket.username, data);
-		var mypost = new post({room: socket.room,name: socket.username, meg: data});
-		mypost.save();
+		// var mypost = new post({room: socket.room,name: socket.username, meg: data});
+		// mypost.save();
 
 	});
 }
